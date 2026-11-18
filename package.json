@@ -8,5 +8,7 @@
     "seed": "node scripts/make-seed.mjs",
     "test": "node scripts/smoke-test.mjs"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  }
 }
