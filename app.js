@@ -1,5 +1,13 @@
 /* Store data comes from config.js (STORE / PRESETS / STORE_KEY) */
-const PROMOS = { HERITAGE5: 0.05, COLLECTOR10: 0.1 };
+let promoRate = 0;
+async function checkPromo(code) {
+  try {
+    const r = await fetch("/api/promo?code=" + encodeURIComponent(code));
+    return r.ok ? (await r.json()).percent / 100 : 0;
+  } catch {
+    return 0;
+  }
+}
 const FREE_SHIP = 1000;
 const PRODUCTS = STORE.products.map((p) => ({
   ...p,
@@ -26,6 +34,18 @@ let wish = store
   .get(K("wish"), [])
   .filter((id) => PRODUCTS.some((p) => p.id === id));
 let promo = store.get("obs_promo", null);
+async function revalidatePromo() {
+  if (!promo) return;
+  const rate = await checkPromo(promo);
+  if (rate) promoRate = rate;
+  else {
+    promo = null;
+    promoRate = 0;
+    store.set("obs_promo", null);
+  }
+  renderCart();
+}
+revalidatePromo();
 const state = { filter: "all", sort: "featured", max: MAX_PRICE };
 const byId = (id) => PRODUCTS.find((p) => p.id === id);
 
@@ -429,6 +449,7 @@ function openPanel(el) {
   el.classList.add("open");
   overlay.classList.add("on");
   document.body.classList.add("lock");
+  if (el.id === "cartDrawer") revalidatePromo();
 }
 function closeAll() {
   $$(".drawer.open,.modal.open,.search.open").forEach((x) =>
@@ -528,7 +549,7 @@ function saveCart() {
 function renderCart() {
   const count = cart.reduce((s, l) => s + l.qty, 0),
     sub = cart.reduce((s, l) => s + byId(l.id).price * l.qty, 0);
-  const disc = promo ? sub * PROMOS[promo] : 0;
+  const disc = promo ? sub * promoRate : 0;
   badge($("#cartCount"), count);
   $("#cartItems").innerHTML = cart.length
     ? cart
@@ -572,11 +593,13 @@ $("#cartItems").addEventListener("click", (e) => {
   if ("rm" in e.target.dataset) cart = cart.filter((x) => x !== l);
   saveCart();
 });
-$("#promoForm").addEventListener("submit", (e) => {
+$("#promoForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const c = $("#promoInput").value.trim().toUpperCase();
-  if (PROMOS[c]) {
+  const rate = c ? await checkPromo(c) : 0;
+  if (rate) {
     promo = c;
+    promoRate = rate;
     store.set("obs_promo", c);
     toast(`Code ${c} applied`);
   } else toast("Invalid code");
