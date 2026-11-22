@@ -64,7 +64,7 @@ const byId = (id) => PRODUCTS.find((p) => p.id === id);
   $("#catGrid").innerHTML = cats
     .map(
       (c) =>
-        `<a class="cat-card reveal tilt" href="#shop" data-filter="${c.key}" style="--img:url('${U(c.img, 900)}')"><span>${c.label}</span><small>${count(c.key)} ${STORE.unit} →</small></a>`,
+        `<a class="cat-card reveal tilt" href="#shop" data-filter="${c.key}" style="--img:url('${U(c.img, 900)}')"><i class="cat-img"></i><span>${c.label}</span><small>${count(c.key)} ${STORE.unit} →</small></a>`,
     )
     .join("");
   $("#hTrack").innerHTML = STORE.lookbook
