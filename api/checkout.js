@@ -12,8 +12,8 @@ import {
   HttpError,
   CURRENCY,
   toMinor,
-  FREE_SHIP_USD,
-  SHIPPING_USD,
+  FREE_SHIP_NGN,
+  SHIPPING_NGN,
   env,
 } from "./_lib.js";
 import { priceCart } from "./_pricing.js";
@@ -57,7 +57,7 @@ export default route(["POST"], async (req, res) => {
   ];
   if (!ids.length) throw new HttpError(400, "Your bag is empty.");
   const rows = await db(
-    `products?id=in.(${ids.join(",")})&select=id,name,price_usd,stock,active,data`,
+    `products?id=in.(${ids.join(",")})&select=id,name,price_ngn,stock,active,data`,
   );
   const products = new Map(rows.map((r) => [r.id, r]));
 
@@ -72,8 +72,8 @@ export default route(["POST"], async (req, res) => {
 
   const priced = priceCart(body.items, products, promo, {
     toMinor,
-    freeShipUsd: FREE_SHIP_USD,
-    shippingUsd: SHIPPING_USD,
+    freeShipNgn: FREE_SHIP_NGN,
+    shippingNgn: SHIPPING_NGN,
   });
   const reference = `MER-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`;
 

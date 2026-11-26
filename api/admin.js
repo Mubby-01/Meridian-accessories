@@ -76,24 +76,42 @@ const actions = {
   },
   async products() {
     return db(
-      "products?select=id,name,cat,price_usd,stock,active,data&order=id",
+      "products?select=id,name,cat,price_ngn,stock,active,data&order=id",
     );
   },
-  async updateProduct({ id, stock, active, price_usd }) {
-    const patch = { updated_at: new Date().toISOString() };
-    if (stock !== undefined) patch.stock = int(stock, "stock");
-    if (active !== undefined) patch.active = !!active;
-    if (price_usd !== undefined) {
-      const p = Number(price_usd);
-      if (!(p >= 0)) throw new HttpError(400, "Invalid price");
-      patch.price_usd = p;
+  async updateProduct({ id, stock, active, price_ngn }) {
+    const patch = {
+      updated_at: new Date().toISOString(),
+    };
+
+    if (stock !== undefined) {
+      patch.stock = int(stock, "stock");
     }
+
+    if (active !== undefined) {
+      patch.active = !!active;
+    }
+
+    if (price_ngn !== undefined) {
+      const p = Number(price_ngn);
+
+      if (!Number.isSafeInteger(p) || p < 0) {
+        throw new HttpError(400, "Invalid Naira price");
+      }
+
+      patch.price_ngn = p;
+    }
+
     const [p] = await db(`products?id=eq.${int(id, "product", 1)}`, {
       method: "PATCH",
       body: patch,
       prefer: "return=representation",
     });
-    if (!p) throw new HttpError(404, "Product not found");
+
+    if (!p) {
+      throw new HttpError(404, "Product not found");
+    }
+
     return p;
   },
   async promos() {

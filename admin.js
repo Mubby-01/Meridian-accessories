@@ -222,17 +222,23 @@ document.addEventListener("click", async (e) => {
 });
 
 /* ---------- Products ---------- */
+const thumb = (id) =>
+  !id
+    ? ""
+    : /^https?:/.test(id)
+      ? id
+      : `https://images.unsplash.com/${id}?auto=format&fit=crop&w=200&q=80`;
 async function loadProducts() {
   const list = await api("products");
   $("#products").innerHTML = list
     .map(
       (p) => `
     <div class="prod ${p.active ? "" : "off"}" data-id="${p.id}">
-      <img src="${esc(p.data?.imgs?.[0] || "")}" alt="" loading="lazy" />
+      <img src="${esc(thumb(p.data?.imgs?.[0]))}" alt="" loading="lazy" />
       <div><b>${esc(p.name)}</b><small>${esc(p.cat)}${p.stock === 0 ? ' · <span class="sold">Sold out</span>' : ""}</small></div>
       <div class="ctl">
         <label>Stock<input type="number" min="0" name="stock" value="${p.stock}" /></label>
-        <label>Price (USD)<input type="number" min="0" step="1" name="price_usd" value="${Number(p.price_usd)}" /></label>
+        <label>Price (NGN)<input type="number" min="0" step="1" name="price_ngn" value="${Number(p.price_ngn)}" /></label>
         <label class="toggle"><input type="checkbox" name="active" ${p.active ? "checked" : ""} /> Live</label>
       </div>
     </div>`,

@@ -8,7 +8,7 @@ async function checkPromo(code) {
     return 0;
   }
 }
-const FREE_SHIP = 1000;
+const FREE_SHIP = 15000000;
 const PRODUCTS = STORE.products.map((p) => ({
   ...p,
   imgs: p.imgs.map((id) => U(id)),
@@ -20,8 +20,7 @@ const MAX_PRICE =
 /* ===== Helpers & state ===== */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const money = (n) =>
-  "$" + n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+const money = (n) => "₦" + Math.round(n).toLocaleString("en-NG");
 const store = {
   get: (k, d) => JSON.parse(localStorage.getItem(k) || "null") ?? d,
   set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
@@ -33,7 +32,8 @@ let cart = store
 let wish = store
   .get(K("wish"), [])
   .filter((id) => PRODUCTS.some((p) => p.id === id));
-let promo = store.get("obs_promo", null);
+let promo = null;
+localStorage.removeItem("obs_promo"); // wipe any code saved by the old version
 async function revalidatePromo() {
   if (!promo) return;
   const rate = await checkPromo(promo);
@@ -549,6 +549,11 @@ function saveCart() {
 function renderCart() {
   const count = cart.reduce((s, l) => s + l.qty, 0),
     sub = cart.reduce((s, l) => s + byId(l.id).price * l.qty, 0);
+  if (!cart.length && promo) {
+    promo = null;
+    promoRate = 0;
+    $("promoInput").value = "";
+  }
   const disc = promo ? sub * promoRate : 0;
   badge($("#cartCount"), count);
   $("#cartItems").innerHTML = cart.length
@@ -600,7 +605,6 @@ $("#promoForm").addEventListener("submit", async (e) => {
   if (rate) {
     promo = c;
     promoRate = rate;
-    store.set("obs_promo", c);
     toast(`Code ${c} applied`);
   } else toast("Invalid code");
   renderCart();

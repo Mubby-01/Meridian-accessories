@@ -5,15 +5,14 @@ import crypto from "node:crypto";
 export const env = (k) => process.env[k] ?? "";
 
 /* ---------- Store settings (set in your hosting env vars) ---------- */
-export const CURRENCY = (env("STORE_CURRENCY") || "NGN").toUpperCase(); // what Paystack charges in
-export const FX_RATE = Number(
-  env("USD_TO_CURRENCY") || (CURRENCY === "USD" ? 1 : 0),
-); // site prices are USD
-export const FREE_SHIP_USD = Number(env("FREE_SHIPPING_OVER_USD") || 1000);
-export const SHIPPING_USD = Number(env("SHIPPING_FLAT_USD") || 35);
+export const CURRENCY = "NGN";
 
-/** USD (display) → minor units of the checkout currency, e.g. kobo. */
-export const toMinor = (usd) => Math.round(usd * FX_RATE * 100);
+export const FREE_SHIP_NGN = Number(env("FREE_SHIPPING_OVER_NGN") || 15000000);
+
+export const SHIPPING_NGN = Number(env("SHIPPING_FLAT_NGN") || 50000);
+
+// Convert Naira to kobo for Paystack.
+export const toMinor = (naira) => Math.round(naira * 100);
 
 /* ---------- HTTP helpers ---------- */
 export class HttpError extends Error {
@@ -73,16 +72,13 @@ export const route = (methods, fn) => async (req, res) => {
 
 export function requireConfig(...keys) {
   const missing = keys.filter((k) => !env(k));
-  if (missing.length)
+
+  if (missing.length) {
     throw new HttpError(
       503,
       `Store backend not configured (missing ${missing.join(", ")}).`,
     );
-  if (!FX_RATE)
-    throw new HttpError(
-      503,
-      "Store backend not configured (set USD_TO_CURRENCY).",
-    );
+  }
 }
 
 /* ---------- Supabase (REST, service role — server only!) ---------- */

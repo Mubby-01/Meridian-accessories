@@ -9,7 +9,7 @@ const products = [
   {
     id: 1,
     name: "Dress Watch",
-    price_usd: 4850,
+    price_ngn: 4850,
     stock: 1,
     active: true,
     data: { colors: ["#d4af37"] },
@@ -17,7 +17,7 @@ const products = [
   {
     id: 3,
     name: "Aviators",
-    price_usd: 420,
+    price_ngn: 420,
     stock: 2,
     active: true,
     data: {
@@ -128,9 +128,8 @@ Object.assign(process.env, {
   PAYSTACK_SECRET_KEY: "sk_test_fake",
   PAYSTACK_BASE_URL: up,
   STORE_CURRENCY: "NGN",
-  USD_TO_CURRENCY: "1500",
-  FREE_SHIPPING_OVER_USD: "1000",
-  SHIPPING_FLAT_USD: "35",
+  FREE_SHIPPING_OVER_NGN: "1000",
+  SHIPPING_FLAT_NGN: "35",
   SITE_URL: "http://localhost",
 });
 const { createServer } = await import("./dev-server.mjs");

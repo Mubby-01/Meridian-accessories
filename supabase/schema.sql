@@ -11,7 +11,7 @@ create table if not exists products (
   id          int primary key,
   name        text not null,
   cat         text not null,
-  price_usd   numeric(12,2) not null check (price_usd >= 0),   -- display price used on the site
+  price_ngn   numeric(15,0) not null check (price_ngn >= 0),   -- display price used on the site
   stock       int not null default 1 check (stock >= 0),
   active      boolean not null default true,
   data        jsonb not null default '{}'::jsonb,               -- year, ref, condition, imgs, colors, options...

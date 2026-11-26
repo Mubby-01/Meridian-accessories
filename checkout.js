@@ -58,6 +58,9 @@
       rows.forEach((r) => {
         const p = byId(r.id);
         if (!p) return;
+
+        p.price = Number(r.price);
+
         const sold = !r.active || r.stock <= 0;
         if (p.sold !== sold || p.stock !== r.stock) {
           p.sold = sold;
