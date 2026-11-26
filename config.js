@@ -46,42 +46,42 @@ const PRESETS = {
       {
         key: "dress",
         label: "Dress watches",
-        img: "photo-1524592094714-0f0654e20314",
+        img: "https://images.dbastatic.dk/dynamic/480x480c/item/27035440/a663c436-5562-41af-8120-efc987c31e1b",
       },
       {
         key: "chrono",
         label: "Chronographs",
-        img: "photo-1508685096489-7aacd43bd3b1",
+        img: "https://i.pinimg.com/originals/5c/5a/9f/5c5a9f14dfd73731932d97e7ca1759d3.jpg",
       },
       {
         key: "sun",
         label: "Sunglasses",
-        img: "photo-1511499767150-a48a237f0083",
+        img: "https://i.pinimg.com/736x/53/57/85/535785ae0a7ea6c63844251fa5348660.jpg",
       },
       {
         key: "optical",
         label: "Optical frames",
-        img: "photo-1574258495973-f010dfbb5371",
+        img: "https://www.eyewearglobo.com/wp-content/uploads/2026/03/shenzhen-browline-acetate-optical-frames-factory-direct-81086-3.jpg",
       },
       {
         key: "pens",
         label: "Writing instruments",
-        img: "photo-1585336261022-680e295ce3fe",
+        img: "https://www.gouletpens.com/cdn/shop/files/Pelikan-M600-ArtCollection-GeorgTippel-4_1500x.jpg?v=1782748193",
       },
       {
         key: "leather",
         label: "Straps & leather",
-        img: "photo-1627123424574-724758594e93",
+        img: "https://th.bing.com/th/id/OIP.ro_6yQuScHLtVgm8FzuDdAHaE7?w=291&h=193&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3",
       },
       {
         key: "jewelry",
         label: "Cufflinks & rings",
-        img: "photo-1605100804763-247f67b3557e",
+        img: "https://th.bing.com/th/id/OIP.ElijYxUdg55xoqZXmzgEBAHaHa?w=213&h=213&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3",
       },
       {
         key: "desk",
         label: "Clocks & desk",
-        img: "photo-1563861826100-9cb868fdbe1c",
+        img: "https://th.bing.com/th/id/OIP.bZveNXZISJhO0OAV661RUwHaKK?w=200&h=274&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3",
       },
     ],
     products: [
