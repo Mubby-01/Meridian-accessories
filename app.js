@@ -808,25 +808,31 @@ $("#searchResults").addEventListener("click", (e) => {
   if (it) openQuickView(+it.dataset.id);
 });
 
-/* ===== Countdown (next drop = 9 days from first visit) ===== */
-const dropAt = store.get("obs_drop", Date.now() + 9 * 864e5);
-store.set("obs_drop", dropAt);
-setInterval(
-  (function cd() {
-    let s = Math.max(0, (dropAt - Date.now()) / 1000) | 0;
-    const v = {
-      d: (s / 86400) | 0,
-      h: ((s % 86400) / 3600) | 0,
-      m: ((s % 3600) / 60) | 0,
-      s: s % 60,
-    };
-    $$("#countdown b").forEach(
-      (b) => (b.textContent = String(v[b.dataset.u]).padStart(2, "0")),
-    );
-    return cd;
-  })(),
-  1000,
-);
+/* ===== Countdown ===== */
+const dropAt = store.get("obs_drop_v2", Date.now() + 14 * 864e5);
+store.set("obs_drop_v2", dropAt);
+
+const updateCountdown = () => {
+  let s = Math.max(0, (dropAt - Date.now()) / 1000) | 0;
+
+  const v = {
+    d: (s / 86400) | 0,
+    h: ((s % 86400) / 3600) | 0,
+    m: ((s % 3600) / 60) | 0,
+    s: s % 60,
+  };
+
+  $$("#countdown b").forEach((b) => {
+    const value = String(v[b.dataset.u]).padStart(2, "0");
+
+    if (b.textContent !== value) {
+      b.textContent = value;
+    }
+  });
+};
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
 /* ===== Reviews slider ===== */
 const quotes = $$("#reviewSlider blockquote");
