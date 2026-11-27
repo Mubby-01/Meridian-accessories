@@ -34,7 +34,10 @@ const PRESETS = {
     dropName: "The 1968 Archive",
     dropSub:
       "Eleven chronographs from one private collection. Released together, once.",
-    dropImg: U("photo-1508685096489-7aacd43bd3b1", 1800),
+    dropImg: U(
+      "https://th.bing.com/th/id/R.dd0fbfcaaf1f98e26ceca7b659af5dcc?rik=QJeh0ClkQdQraQ&pid=ImgRaw&r=0",
+      1800,
+    ),
     lookbook: [
       "photo-1522312346375-d1a52e2b99b3",
       "photo-1577803645773-f96470509666",
